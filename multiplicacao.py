@@ -2932,9 +2932,9 @@ def _(mo):
 
     | Componente | Versão utilizada |
     |---|---|
-    | Python | **[PREENCHER APÓS VERIFICAÇÃO]** |
-    | Marimo | **[PREENCHER APÓS VERIFICAÇÃO]** |
-    | Z3 | **[PREENCHER APÓS VERIFICAÇÃO]** |
+    | Python | 3.14.7 |
+    | Marimo | 0.25.0 |
+    | Z3 | 5.1.0 |
     | Largura dos BitVecs | \(n=8\) |
 
     As versões devem corresponder ao ambiente em que o notebook foi efetivamente executado.
@@ -2992,7 +2992,7 @@ def _(mo):
 
     **Ligação para o diálogo de desenvolvimento:**
 
-    [INSERIR AQUI A LIGAÇÃO PARTILHADA DA CONVERSA]
+    https://chatgpt.com/share/6ae4ee04-d360-83ed-970f-1595d13ee104
 
     O diálogo documenta a evolução das decisões, as alternativas consideradas e as alterações propostas.
 
@@ -3004,7 +3004,6 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    mo.md(r"\"\"
     ## 14. Referências
 
     ### Materiais da unidade curricular
@@ -3024,8 +3023,7 @@ def _(mo):
     ### Implementação e diálogo
 
     - **Código-fonte:** https://github.com/Tiago-M90/LC-TP2.3
-    - **Diálogo com a LLM:** [INSERIR LIGAÇÃO PARTILHADA]
-    "\"\")
+    - **Diálogo com a LLM:** https://chatgpt.com/share/6ae4ee04-d360-83ed-970f-1595d13ee104
     """)
     return
 
