@@ -229,7 +229,7 @@
     },
     {
       "id": "ROlb",
-      "code_hash": "2ee289b646cbe2c189f22844c6c90497",
+      "code_hash": "c7f4f83ffbfe7b43d9b6d996875e3908",
       "outputs": [
         {
           "type": "data",
@@ -746,6 +746,52 @@
         }
       ],
       "console": []
+    },
+    {
+      "id": "KjYB",
+      "code_hash": "0f75d73f5cc312e7bf4dcb72c27fd6c1",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"9-validacao-independente-do-sfots\">9. Valida\u00e7\u00e3o independente do SFOTS</h2>\n<span class=\"paragraph\">Para complementar os testes realizados com Z3, implementamos um validador em Python que verifica os percursos produzidos por <code>executar_cfa</code>.</span>\n<span class=\"paragraph\">O validador n\u00e3o utiliza o solver nem as f\u00f3rmulas simb\u00f3licas da rela\u00e7\u00e3o de transi\u00e7\u00e3o.</span>\n<span class=\"paragraph\">Para cada par de estados consecutivos, confirma:</span>\n<ul>\n<li>A conserva\u00e7\u00e3o dos operandos originais <marimo-tex class=\"arithmatex\">||(a||)</marimo-tex> e <marimo-tex class=\"arithmatex\">||(b||)</marimo-tex>;</li>\n<li>A inicializa\u00e7\u00e3o <marimo-tex class=\"arithmatex\">||(x=a,\\ y=b,\\ z=0||)</marimo-tex>;</li>\n<li>A sele\u00e7\u00e3o do ramo correto em <code>skip</code>;</li>\n<li>As atualiza\u00e7\u00f5es aritm\u00e9ticas em <code>left</code> e <code>right</code>;</li>\n<li>A dete\u00e7\u00e3o de overflow sem sinal;</li>\n<li>A preced\u00eancia dos ramos de erro;</li>\n<li>A aus\u00eancia de transi\u00e7\u00f5es a partir de estados terminais.</li>\n</ul>\n<span class=\"paragraph\">As opera\u00e7\u00f5es s\u00e3o calculadas com inteiros Python e os resultados armazenados s\u00e3o reduzidos m\u00f3dulo <marimo-tex class=\"arithmatex\">||(2^n||)</marimo-tex>, quando aplic\u00e1vel.</span>\n<span class=\"paragraph\">Ser\u00e3o reutilizados os cinco percursos j\u00e1 obtidos com o Z3.</span>\n<span class=\"paragraph\">Esta valida\u00e7\u00e3o \u00e9 independente do solver, mas n\u00e3o substitui as provas formais das al\u00edneas anteriores.</span>\n<span class=\"paragraph\"><strong>Contribui\u00e7\u00e3o LLM:</strong> Proposta e implementa\u00e7\u00e3o do validador independente e dos respetivos testes de regress\u00e3o.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "iViU",
+      "code_hash": "d944ad4685c5d96687da06f841b56494",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "GYia",
+      "code_hash": "ec3c6b03c2a3a3a68f2b4ec12d73ac70",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Multiplicacao 3 x 5: OK (10 transi\u00e7\u00f5es)\nOverflow em left: OK (5 transi\u00e7\u00f5es)\nOverflow em right: OK (7 transi\u00e7\u00f5es)\nMultiplicacao com b = 0: OK (2 transi\u00e7\u00f5es)\nMultiplicacao com a = 0: OK (12 transi\u00e7\u00f5es)\nAtualizacao incorreta de z: detetada\nViolacao da precedencia do overflow: detetada\n\nRegressao independente concluida.\n",
+          "mimetype": "text/plain"
+        }
+      ]
     }
   ]
 }

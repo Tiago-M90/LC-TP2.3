@@ -118,7 +118,6 @@ def _(BitVecs, Consts, EnumSort):
     # Representação dos estados
     S = (pc, a, b, x, y, z)
     S_next = (pc_next, a_next, b_next, x_next, y_next, z_next)
-
     return (
         ERROR_L,
         ERROR_R,
@@ -177,7 +176,6 @@ def _(INIT, pc):
 
     # Predicado dos estados iniciais
     I = (pc == INIT)
-
     return (I,)
 
 
@@ -195,7 +193,6 @@ def _(I, Solver, a, x):
     solver_livre.add(I, x != a)
 
     print("x pode ser diferente de a antes de init:", solver_livre.check())
-
     return
 
 
@@ -278,7 +275,6 @@ def _(
         y_next == b,
         z_next == BitVecVal(0, n)
     )
-
     return And, BitVecVal, Or, T1
 
 
@@ -352,7 +348,6 @@ def _(
 
     # Relação parcial: apenas as quatro primeiras transições
     T_parcial = Or(T1, T2, T3, T4)
-
     return T_parcial, even_y, odd_y, um, zero
 
 
@@ -469,7 +464,6 @@ def _(
         )
 
     print(f"\n{len(casos_t)} testes concluídos.")
-
     return (unsat,)
 
 
@@ -592,7 +586,6 @@ def _(
     # Relação parcial atualizada
     # Preserva as quatro transições anteriores
     T_com_left = Or(T_parcial, T5, T6)
-
     return Extract, Not, OF_L, T5, T6, T_com_left, UGE, ZeroExt
 
 
@@ -669,20 +662,24 @@ def _(
     z_next,
 ):
 
-    # Limite a partir do qual duplicar x causa overflow
+    # Valores de teste adaptados à largura dos BitVecs
     limiar_left = 2 ** (n - 1)
+
+    x_teste_left = min(20, limiar_left - 1)
+    y_teste_left = min(6, 2**n - 2)
+    z_teste_left = min(7, 2**n - 1)
 
     casos_left = [
         (
             "Duplicacao sem overflow",
             [
                 T5,
-                x == 20,
-                y == 6,
-                z == 7,
-                x_next == 40,
-                y_next == 3,
-                z_next == 7
+                x == x_teste_left,
+                y == y_teste_left,
+                z == z_teste_left,
+                x_next == 2 * x_teste_left,
+                y_next == y_teste_left // 2,
+                z_next == z_teste_left
             ],
             sat
         ),
@@ -690,8 +687,8 @@ def _(
             "Duplicacao incorreta impossivel",
             [
                 T5,
-                x == 20,
-                x_next != 40
+                x == x_teste_left,
+                x_next != 2 * x_teste_left
             ],
             unsat
         ),
@@ -699,8 +696,8 @@ def _(
             "Divisao de y incorreta impossivel",
             [
                 T5,
-                y == 6,
-                y_next != 3
+                y == y_teste_left,
+                y_next != y_teste_left // 2
             ],
             unsat
         ),
@@ -734,9 +731,9 @@ def _(
             [
                 T6,
                 x == limiar_left,
-                y == 6,
+                y == y_teste_left,
                 x_next == 0,
-                y_next == 3
+                y_next == y_teste_left // 2
             ],
             sat
         ),
@@ -784,13 +781,11 @@ def _(
         )
     ]
 
-    # Executar os testes
     for nome_left, restricoes_left, esperado_left in casos_left:
         solver_left = Solver()
         solver_left.add(*restricoes_left)
 
         resultado_left = solver_left.check()
-
         print(f"{nome_left}: {resultado_left}")
 
         assert resultado_left == esperado_left, (
@@ -930,7 +925,6 @@ def _(
 
     # Relação parcial das transições de right
     T_right = Or(T7, T8)
-
     return OF_R, T7, T8, T_right
 
 
@@ -1154,7 +1148,6 @@ def _(
         )
 
     print(f"\n{len(casos_right)} testes de right concluídos.")
-
     return
 
 
@@ -1226,7 +1219,6 @@ def _(ERROR_L, ERROR_R, Or, STOP, T_com_left, T_right, pc):
         pc == STOP,
         E
     )
-
     return E, T, Term
 
 
@@ -1449,7 +1441,6 @@ def _(executar_cfa, n):
         print("Teste: OK")
 
     print(f"\n{len(casos_execucao)} execuções validadas.")
-
     return (percursos_obtidos,)
 
 
@@ -1470,10 +1461,7 @@ def _(percursos_obtidos):
             f"{estado_normal['y']:<3} | "
             f"{estado_normal['z']}"
         )
-
     return
-
-
 
 
 @app.cell
@@ -1579,7 +1567,6 @@ def _(
     print("stop não é um estado de erro: unsat")
 
     print("\n15 verificações estruturais concluídas.")
-
     return
 
 
@@ -1673,7 +1660,6 @@ def _(
 
     assert resultado_base_p == sat
     assert resultado_passo_p == sat
-
     return P_mod, P_mod_next
 
 
@@ -1758,7 +1744,6 @@ def _(
 
     assert resultado_base_q == unsat
     assert resultado_passo_q == sat
-
     return Q_cond, Q_cond_next
 
 
@@ -1885,7 +1870,6 @@ def _(
     assert resultado_passo_j == unsat
 
     print("Invariante reforcado demonstrado por 1-inducao.")
-
     return C_guard, C_guard_next
 
 
@@ -2002,7 +1986,6 @@ def _(And, BitVecVal, I, a, a_next, b, b_next, n):
 
     print(f"Largura dos BitVecs: {n}")
     print(f"Maior valor inicial permitido: {max_entrada_c}")
-
     return I_c, limites_c, limites_next_c, max_entrada_c
 
 
@@ -2127,7 +2110,6 @@ def _(
         C_guard_next,
         Not(E_next_c)
     )
-
     return E_next_c, J_c, J_next_c
 
 
@@ -2214,7 +2196,6 @@ def _(E_next_c, I_c, J_c, J_next_c, Not, Solver, T, sat, unsat):
     assert resultado_erro_c == unsat
 
     print("\nSeguranca demonstrada por 1-inducao.")
-
     return
 
 
@@ -2243,7 +2224,6 @@ def _(executar_cfa, max_entrada_c):
     )
     print("Estado final:", estado_final_c["pc"])
     print("Teste do limite: OK")
-
     return
 
 
@@ -2429,7 +2409,6 @@ def _(
             ULT(R_next_d, R_d)
         )
     )
-
     return Const, P_star_d, substitute
 
 
@@ -2559,7 +2538,6 @@ def _(
     assert resultado_passo_d == unsat
 
     print("Lookahead demonstrado por inducao.")
-
     return
 
 
@@ -2621,7 +2599,6 @@ def _(
     assert resultado_cobertura_d == unsat
 
     print("Guardas dos nodos nao terminais cobertas.")
-
     return
 
 
@@ -2659,6 +2636,227 @@ def _(mo):
 
     **Contribuição LLM:** Formulação da função de progresso, construção do lookahead, codificação da prova indutiva e verificação da cobertura das guardas.
     """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 9. Validação independente do SFOTS
+
+    Para complementar os testes realizados com Z3, implementamos um validador em Python que verifica os percursos produzidos por `executar_cfa`.
+
+    O validador não utiliza o solver nem as fórmulas simbólicas da relação de transição.
+
+    Para cada par de estados consecutivos, confirma:
+
+    - A conservação dos operandos originais \(a\) e \(b\);
+    - A inicialização \(x=a,\ y=b,\ z=0\);
+    - A seleção do ramo correto em `skip`;
+    - As atualizações aritméticas em `left` e `right`;
+    - A deteção de overflow sem sinal;
+    - A precedência dos ramos de erro;
+    - A ausência de transições a partir de estados terminais.
+
+    As operações são calculadas com inteiros Python e os resultados armazenados são reduzidos módulo \(2^n\), quando aplicável.
+
+    Serão reutilizados os cinco percursos já obtidos com o Z3.
+
+    Esta validação é independente do solver, mas não substitui as provas formais das alíneas anteriores.
+
+    **Contribuição LLM:** Proposta e implementação do validador independente e dos respetivos testes de regressão.
+    """)
+    return
+
+
+@app.function
+# Contribuição LLM: validador independente das fórmulas Z3.
+def validar_percurso_python(percurso, largura):
+    """Valida um percurso usando apenas as regras do CFA em Python."""
+
+    assert isinstance(largura, int) and largura >= 1
+    assert percurso, "O percurso não pode ser vazio."
+
+    modulo_py = 1 << largura
+    campos_py = ("pc", "a", "b", "x", "y", "z")
+
+    nodos_py = {
+        "init", "skip", "left", "right",
+        "stop", "error_L", "error_R"
+    }
+    terminais_py = {"stop", "error_L", "error_R"}
+
+    # Validar a estrutura e os domínios dos estados
+    for i_py, estado_py in enumerate(percurso):
+        assert (
+            isinstance(estado_py, dict)
+            and set(estado_py) == set(campos_py)
+        ), f"Estado {i_py}: formato inválido."
+
+        assert estado_py["pc"] in nodos_py, (
+            f"Estado {i_py}: nodo inválido."
+        )
+
+        for nome_py in campos_py[1:]:
+            valor_py = estado_py[nome_py]
+
+            assert (
+                type(valor_py) is int
+                and 0 <= valor_py < modulo_py
+            ), (
+                f"Estado {i_py}: {nome_py} fora "
+                f"do intervalo de {largura} bits."
+            )
+
+    # O percurso deve começar em init
+    assert percurso[0]["pc"] == "init", (
+        "O percurso não começa em init."
+    )
+
+    # Validar cada transição de forma independente
+    for i_py in range(len(percurso) - 1):
+        atual_py = percurso[i_py]
+        seguinte_py = percurso[i_py + 1]
+
+        assert atual_py["pc"] not in terminais_py, (
+            f"Passo {i_py}: transição a partir "
+            "de um estado terminal."
+        )
+
+        # Por defeito, todas as variáveis são preservadas
+        esperado_py = atual_py.copy()
+        nodo_py = atual_py["pc"]
+
+        if nodo_py == "init":
+            esperado_py.update(
+                pc="skip",
+                x=atual_py["a"],
+                y=atual_py["b"],
+                z=0
+            )
+
+        elif nodo_py == "skip":
+            y_py = atual_py["y"]
+
+            if y_py == 0:
+                destino_py = "stop"
+            elif y_py % 2 == 0:
+                destino_py = "left"
+            else:
+                destino_py = "right"
+
+            esperado_py["pc"] = destino_py
+
+        elif nodo_py == "left":
+            # Calcular primeiro o resultado matemático exato
+            dobro_py = 2 * atual_py["x"]
+
+            esperado_py.update(
+                pc=(
+                    "error_L"
+                    if dobro_py >= modulo_py
+                    else "skip"
+                ),
+                x=dobro_py % modulo_py,
+                y=atual_py["y"] // 2
+            )
+
+        elif nodo_py == "right":
+            # Calcular primeiro a soma matemática exata
+            soma_py = atual_py["z"] + atual_py["x"]
+
+            esperado_py.update(
+                pc=(
+                    "error_R"
+                    if soma_py >= modulo_py
+                    else "skip"
+                ),
+                y=(atual_py["y"] - 1) % modulo_py,
+                z=soma_py % modulo_py
+            )
+
+        # Comparar todas as componentes do estado seguinte
+        for nome_py in campos_py:
+            assert seguinte_py[nome_py] == esperado_py[nome_py], (
+                f"Passo {i_py} ({nodo_py}): "
+                f"{nome_py} deveria ser {esperado_py[nome_py]}, "
+                f"obtido {seguinte_py[nome_py]}."
+            )
+
+    # Uma execução completa deve terminar num nodo terminal
+    assert percurso[-1]["pc"] in terminais_py, (
+        "O percurso terminou fora de um estado terminal."
+    )
+
+    return len(percurso) - 1
+
+
+@app.cell
+def _(n, percursos_obtidos):
+
+    # Reutilizar os cinco percursos obtidos anteriormente
+    regressao_percursos_py = {}
+
+    for nome_reg_py, percurso_reg_py in percursos_obtidos.items():
+        passos_reg_py = validar_percurso_python(
+            percurso_reg_py, n
+        )
+
+        regressao_percursos_py[nome_reg_py] = passos_reg_py
+
+        print(
+            f"{nome_reg_py}: OK "
+            f"({passos_reg_py} transições)"
+        )
+
+    assert len(regressao_percursos_py) == 5
+
+    # Teste negativo 1:
+    # Introduzir deliberadamente um erro na atualização de z
+    percurso_mutado_z_py = [
+        estado.copy()
+        for estado in percursos_obtidos["Multiplicacao 3 x 5"]
+    ]
+
+    indice_mutacao_z_py = next(
+        i + 1
+        for i in range(len(percurso_mutado_z_py) - 1)
+        if percurso_mutado_z_py[i]["pc"] == "right"
+    )
+
+    percurso_mutado_z_py[indice_mutacao_z_py]["z"] = (
+        percurso_mutado_z_py[indice_mutacao_z_py]["z"] + 1
+    ) % (1 << n)
+
+    try:
+        validar_percurso_python(percurso_mutado_z_py, n)
+    except AssertionError:
+        print("Atualizacao incorreta de z: detetada")
+    else:
+        raise AssertionError(
+            "O validador não detetou a atualização incorreta de z."
+        )
+
+    # Teste negativo 2:
+    # Tentar ignorar o overflow em right
+    percurso_mutado_erro_py = [
+        estado.copy()
+        for estado in percursos_obtidos["Overflow em right"]
+    ]
+
+    percurso_mutado_erro_py[-1]["pc"] = "skip"
+
+    try:
+        validar_percurso_python(percurso_mutado_erro_py, n)
+    except AssertionError:
+        print("Violacao da precedencia do overflow: detetada")
+    else:
+        raise AssertionError(
+            "O validador não detetou a violação da precedência."
+        )
+
+    print("\nRegressao independente concluida.")
+
     return
 
 
