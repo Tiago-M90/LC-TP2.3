@@ -792,6 +792,91 @@
           "mimetype": "text/plain"
         }
       ]
+    },
+    {
+      "id": "Hgqg",
+      "code_hash": "be616269ba9eba1107ab997514f30f6a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"10-conclusao-geral\">10. Conclus\u00e3o geral</h2>\n<span class=\"paragraph\">Neste trabalho foi constru\u00eddo e analisado um SFOTS que representa o algoritmo de multiplica\u00e7\u00e3o de inteiros descrito pelo CFA fornecido.</span>\n<span class=\"paragraph\">Os principais resultados foram:</span>\n<table>\n<thead>\n<tr>\n<th>Al\u00ednea</th>\n<th>Resultado</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><strong>3.a</strong></td>\n<td>Constru\u00e7\u00e3o do SFOTS, preservando os sete nodos e as oito transi\u00e7\u00f5es do CFA.</td>\n</tr>\n<tr>\n<td><strong>3.b</strong></td>\n<td>A igualdade <marimo-tex class=\"arithmatex\">||(xy+z=ab||)</marimo-tex> n\u00e3o \u00e9 um invariante global antes da inicializa\u00e7\u00e3o, mas foi demonstrada a sua conserva\u00e7\u00e3o modular ap\u00f3s a execu\u00e7\u00e3o de <code>init</code>, atrav\u00e9s de um invariante refor\u00e7ado e 1-indu\u00e7\u00e3o.</td>\n</tr>\n<tr>\n<td><strong>3.c</strong></td>\n<td>Foi demonstrada por 1-indu\u00e7\u00e3o a inacessibilidade dos estados de erro, sob as restri\u00e7\u00f5es iniciais indicadas e a interpreta\u00e7\u00e3o de overflow sem sinal.</td>\n</tr>\n<tr>\n<td><strong>3.d</strong></td>\n<td>Foi demonstrada a termina\u00e7\u00e3o em <code>stop</code> ou num dos estados de erro, recorrendo a uma fun\u00e7\u00e3o de progresso e a um predicado <em>lookahead</em>.</td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\">As verifica\u00e7\u00f5es foram complementadas com testes de satisfatibilidade, percursos de execu\u00e7\u00e3o e um validador independente em Python.</span>\n<span class=\"paragraph\">Os resultados apresentados foram obtidos para a configura\u00e7\u00e3o de 8 bits utilizada no notebook. As respetivas hip\u00f3teses e limita\u00e7\u00f5es s\u00e3o identificadas na sec\u00e7\u00e3o seguinte.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "saha",
+      "code_hash": "808065350ec613f2b31fe44db3d3617b",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"11-limitacoes-e-decisoes-de-modelacao\">11. Limita\u00e7\u00f5es e decis\u00f5es de modela\u00e7\u00e3o</h2>\n<span class=\"paragraph\"><strong>Interpreta\u00e7\u00e3o do overflow.</strong>\nFoi adotada a interpreta\u00e7\u00e3o sem sinal dos BitVecs. Esta decis\u00e3o \u00e9 coerente com a condi\u00e7\u00e3o de seguran\u00e7a da al\u00ednea 3.c, mas distingue-se da descri\u00e7\u00e3o de overflow com sinal tamb\u00e9m apresentada no documento de apoio do professor. As conclus\u00f5es sobre seguran\u00e7a dependem desta escolha.</span>\n<span class=\"paragraph\"><strong>Largura dos BitVecs.</strong>\nAs verifica\u00e7\u00f5es apresentadas foram executadas com <marimo-tex class=\"arithmatex\">||(n=8||)</marimo-tex>. Embora o modelo seja parametrizado, uma prova do Z3 para uma largura concreta n\u00e3o demonstra automaticamente a propriedade para todas as larguras poss\u00edveis.</span>\n<span class=\"paragraph\"><strong>Inicializa\u00e7\u00e3o.</strong>\nO estado inicial corresponde \u00e0 entrada de <code>init</code>. Por isso, a igualdade <marimo-tex class=\"arithmatex\">||(xy+z=ab||)</marimo-tex> s\u00f3 \u00e9 exigida depois da execu\u00e7\u00e3o da a\u00e7\u00e3o de inicializa\u00e7\u00e3o, conforme a formula\u00e7\u00e3o condicionada apresentada na al\u00ednea 3.b.</span>\n<span class=\"paragraph\"><strong>Termina\u00e7\u00e3o.</strong>\nS\u00e3o considerados terminais os nodos <code>stop</code>, <code>error_L</code> e <code>error_R</code>. A termina\u00e7\u00e3o \u00e9 interpretada sobre execu\u00e7\u00f5es m\u00e1ximas, que n\u00e3o prosseguem ap\u00f3s alcan\u00e7ar esses estados. N\u00e3o foram acrescentadas autotransi\u00e7\u00f5es terminais ao CFA.</span>\n<span class=\"paragraph\"><strong>Valida\u00e7\u00e3o e desempenho.</strong>\nO validador Python verifica percursos concretos independentemente das f\u00f3rmulas Z3, mas n\u00e3o substitui as demonstra\u00e7\u00f5es formais. A avalia\u00e7\u00e3o sistem\u00e1tica da efici\u00eancia computacional e da escalabilidade fica reservada para uma etapa posterior.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "cKYi",
+      "code_hash": "49c11394573b75986d530fd77677d330",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Python: 3.14.7\nMarimo: 0.25.0\nZ3: 5.1.0\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "aupR",
+      "code_hash": "fd61533946b44268a58d23e685383a7f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"12-reprodutibilidade\">12. Reprodutibilidade</h2>\n<h3 id=\"121-ambiente-utilizado\">12.1. Ambiente utilizado</h3>\n<span class=\"paragraph\">O trabalho foi desenvolvido em Python, utilizando Marimo para o notebook e Z3 para a verifica\u00e7\u00e3o de f\u00f3rmulas SMT.</span>\n<table>\n<thead>\n<tr>\n<th>Componente</th>\n<th>Vers\u00e3o utilizada</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Python</td>\n<td><strong>[PREENCHER AP\u00d3S VERIFICA\u00c7\u00c3O]</strong></td>\n</tr>\n<tr>\n<td>Marimo</td>\n<td><strong>[PREENCHER AP\u00d3S VERIFICA\u00c7\u00c3O]</strong></td>\n</tr>\n<tr>\n<td>Z3</td>\n<td><strong>[PREENCHER AP\u00d3S VERIFICA\u00c7\u00c3O]</strong></td>\n</tr>\n<tr>\n<td>Largura dos BitVecs</td>\n<td><marimo-tex class=\"arithmatex\">||(n=8||)</marimo-tex></td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\">As vers\u00f5es devem corresponder ao ambiente em que o notebook foi efetivamente executado.</span>\n<h3 id=\"122-instrucoes-de-reproducao\">12.2. Instru\u00e7\u00f5es de reprodu\u00e7\u00e3o</h3>\n<span class=\"paragraph\">O c\u00f3digo est\u00e1 dispon\u00edvel no reposit\u00f3rio:</span>\n<span class=\"paragraph\"><a href=\"https://github.com/Tiago-M90/LC-TP2.3\" rel=\"noopener noreferrer\" target=\"_blank\">https://github.com/Tiago-M90/LC-TP2.3</a></span>\n<span class=\"paragraph\">Para reproduzir os resultados:</span>\n<ol>\n<li>Obter o ficheiro <code>multiplicacao.py</code> do reposit\u00f3rio.</li>\n<li>Preparar um ambiente Python com as vers\u00f5es de Marimo e <code>z3-solver</code> identificadas acima.</li>\n<li>Abrir o notebook com o comando:</li>\n</ol>\n<span class=\"paragraph\"><code>marimo edit multiplicacao.py</code></span>\n<ol start=\"4\">\n<li>Executar as c\u00e9lulas e confirmar os testes, as verifica\u00e7\u00f5es por indu\u00e7\u00e3o e os resultados do validador independente.</li>\n<li>Manter <marimo-tex class=\"arithmatex\">||(n=8||)</marimo-tex> para reproduzir os resultados documentados.</li>\n</ol>\n<span class=\"paragraph\">As verifica\u00e7\u00f5es relevantes incluem os casos base e passos indutivos, os testes de overflow, os percursos completos e a valida\u00e7\u00e3o independente das transi\u00e7\u00f5es.</span>\n<span class=\"paragraph\">A execu\u00e7\u00e3o com outras larguras requer repetir as verifica\u00e7\u00f5es e confirmar a compatibilidade dos exemplos utilizados.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "QhNl",
+      "code_hash": "0c3af1206eff0f2fd6a3d91949c35a7e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"13-utilizacao-de-ferramentas-llm\">13. Utiliza\u00e7\u00e3o de ferramentas LLM</h2>\n<span class=\"paragraph\">Foi utilizada uma ferramenta LLM (ChatGPT) como apoio t\u00e9cnico e pedag\u00f3gico durante o desenvolvimento do trabalho.</span>\n<span class=\"paragraph\">A utiliza\u00e7\u00e3o incluiu discuss\u00e3o dos requisitos, formula\u00e7\u00e3o l\u00f3gica, prepara\u00e7\u00e3o de c\u00f3digo Z3, proposta de testes e an\u00e1lise dos resultados comunicados durante o desenvolvimento.</span>\n<h3 id=\"131-resumo-das-contribuicoes\">13.1. Resumo das contribui\u00e7\u00f5es</h3>\n<table>\n<thead>\n<tr>\n<th>Componente</th>\n<th>Contribui\u00e7\u00e3o da LLM</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>An\u00e1lise do enunciado</td>\n<td>Interpreta\u00e7\u00e3o dos requisitos e discuss\u00e3o das alternativas de modela\u00e7\u00e3o.</td>\n</tr>\n<tr>\n<td>Constru\u00e7\u00e3o do SFOTS</td>\n<td>Apoio \u00e0 formula\u00e7\u00e3o das vari\u00e1veis, transi\u00e7\u00f5es, inicializa\u00e7\u00e3o e predicados de erro.</td>\n</tr>\n<tr>\n<td>Overflow</td>\n<td>Proposta de dete\u00e7\u00e3o sem sinal com BitVecs alargados e respetiva justifica\u00e7\u00e3o.</td>\n</tr>\n<tr>\n<td>Verifica\u00e7\u00e3o por indu\u00e7\u00e3o</td>\n<td>Proposta dos invariantes auxiliares e das condi\u00e7\u00f5es de base e passo indutivo.</td>\n</tr>\n<tr>\n<td>Termina\u00e7\u00e3o</td>\n<td>Formula\u00e7\u00e3o da fun\u00e7\u00e3o de progresso e do predicado <em>lookahead</em>.</td>\n</tr>\n<tr>\n<td>Valida\u00e7\u00e3o</td>\n<td>Proposta de testes Z3, percursos de execu\u00e7\u00e3o e validador independente em Python.</td>\n</tr>\n<tr>\n<td>Documenta\u00e7\u00e3o</td>\n<td>Apoio \u00e0 reda\u00e7\u00e3o das explica\u00e7\u00f5es, conclus\u00f5es e instru\u00e7\u00f5es de reprodu\u00e7\u00e3o.</td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\">As sugest\u00f5es da LLM foram discutidas ao longo do di\u00e1logo e sujeitas a verifica\u00e7\u00f5es no ambiente de desenvolvimento. Os resultados de execu\u00e7\u00e3o referidos no notebook correspondem \u00e0s verifica\u00e7\u00f5es comunicadas durante o trabalho, n\u00e3o a execu\u00e7\u00f5es realizadas pela LLM no ambiente dos autores.</span>\n<h3 id=\"132-registo-do-dialogo\">13.2. Registo do di\u00e1logo</h3>\n<span class=\"paragraph\"><strong>Ferramenta:</strong> ChatGPT \u2014 OpenAI</span>\n<span class=\"paragraph\"><strong>Liga\u00e7\u00e3o para o di\u00e1logo de desenvolvimento:</strong></span>\n<span class=\"paragraph\">[INSERIR AQUI A LIGA\u00c7\u00c3O PARTILHADA DA CONVERSA]</span>\n<span class=\"paragraph\">O di\u00e1logo documenta a evolu\u00e7\u00e3o das decis\u00f5es, as alternativas consideradas e as altera\u00e7\u00f5es propostas.</span>\n<span class=\"paragraph\">A liga\u00e7\u00e3o \u00e9 disponibilizada como parte da documenta\u00e7\u00e3o complementar, de acordo com as regras da unidade curricular.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZnWt",
+      "code_hash": "cc2575683cf4c7160c2b39ca8e7d1f66",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">mo.md(r\"\\\"\"</span>\n<h2 id=\"14-referencias\">14. Refer\u00eancias</h2>\n<h3 id=\"materiais-da-unidade-curricular\">Materiais da unidade curricular</h3>\n<ol>\n<li><strong>L\u00f3gica Computacional 2026\u20132027 \u2014 Trabalhos Pr\u00e1ticos.</strong> Regras gerais dos trabalhos e enunciado do Exerc\u00edcio 3, p\u00e1ginas 1\u20133 e 7.</li>\n<li><strong>L\u00f3gica Computacional: Multiplica\u00e7\u00e3o de Inteiros.</strong> Descri\u00e7\u00e3o do algoritmo, CFA, sem\u00e2ntica das transi\u00e7\u00f5es e opera\u00e7\u00f5es sobre BitVecs, p\u00e1ginas 1\u20135.</li>\n<li><strong>Cap\u00edtulo 3 \u2014 Satisfiability Modulo Theories (2.\u00aa parte).</strong> Sistemas de transi\u00e7\u00e3o de primeira ordem, k-indu\u00e7\u00e3o e propriedades de anima\u00e7\u00e3o (<em>lookaheads</em>).</li>\n<li><strong>Cap\u00edtulo 4 \u2014 Verifica\u00e7\u00e3o de Modelos baseada em SAT.</strong> Defini\u00e7\u00e3o de SFOTS, estados alcan\u00e7\u00e1veis e propriedades de seguran\u00e7a.</li>\n<li><strong>Cap\u00edtulo 6 \u2014 Verifica\u00e7\u00e3o Formal de Software.</strong> Sem\u00e2ntica de programas imperativos e propriedades de corre\u00e7\u00e3o e termina\u00e7\u00e3o.</li>\n<li><strong>Uso de Ferramentas LLM.</strong> Documento da disciplina sobre identifica\u00e7\u00e3o, referencia\u00e7\u00e3o e avalia\u00e7\u00e3o da utiliza\u00e7\u00e3o de ferramentas LLM.</li>\n</ol>\n<h3 id=\"implementacao-e-dialogo\">Implementa\u00e7\u00e3o e di\u00e1logo</h3>\n<ul>\n<li><strong>C\u00f3digo-fonte:</strong> <a href=\"https://github.com/Tiago-M90/LC-TP2.3\" rel=\"noopener noreferrer\" target=\"_blank\">https://github.com/Tiago-M90/LC-TP2.3</a></li>\n<li><strong>Di\u00e1logo com a LLM:</strong> [INSERIR LIGA\u00c7\u00c3O PARTILHADA]\n\"\\\"\")</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
     }
   ]
 }

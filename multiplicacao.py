@@ -2860,5 +2860,175 @@ def _(n, percursos_obtidos):
     return
 
 
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 10. Conclusão geral
+
+    Neste trabalho foi construído e analisado um SFOTS que representa o algoritmo de multiplicação de inteiros descrito pelo CFA fornecido.
+
+    Os principais resultados foram:
+
+    | Alínea | Resultado |
+    |---|---|
+    | **3.a** | Construção do SFOTS, preservando os sete nodos e as oito transições do CFA. |
+    | **3.b** | A igualdade \(xy+z=ab\) não é um invariante global antes da inicialização, mas foi demonstrada a sua conservação modular após a execução de `init`, através de um invariante reforçado e 1-indução. |
+    | **3.c** | Foi demonstrada por 1-indução a inacessibilidade dos estados de erro, sob as restrições iniciais indicadas e a interpretação de overflow sem sinal. |
+    | **3.d** | Foi demonstrada a terminação em `stop` ou num dos estados de erro, recorrendo a uma função de progresso e a um predicado *lookahead*. |
+
+    As verificações foram complementadas com testes de satisfatibilidade, percursos de execução e um validador independente em Python.
+
+    Os resultados apresentados foram obtidos para a configuração de 8 bits utilizada no notebook. As respetivas hipóteses e limitações são identificadas na secção seguinte.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 11. Limitações e decisões de modelação
+
+    **Interpretação do overflow.**
+    Foi adotada a interpretação sem sinal dos BitVecs. Esta decisão é coerente com a condição de segurança da alínea 3.c, mas distingue-se da descrição de overflow com sinal também apresentada no documento de apoio do professor. As conclusões sobre segurança dependem desta escolha.
+
+    **Largura dos BitVecs.**
+    As verificações apresentadas foram executadas com \(n=8\). Embora o modelo seja parametrizado, uma prova do Z3 para uma largura concreta não demonstra automaticamente a propriedade para todas as larguras possíveis.
+
+    **Inicialização.**
+    O estado inicial corresponde à entrada de `init`. Por isso, a igualdade \(xy+z=ab\) só é exigida depois da execução da ação de inicialização, conforme a formulação condicionada apresentada na alínea 3.b.
+
+    **Terminação.**
+    São considerados terminais os nodos `stop`, `error_L` e `error_R`. A terminação é interpretada sobre execuções máximas, que não prosseguem após alcançar esses estados. Não foram acrescentadas autotransições terminais ao CFA.
+
+    **Validação e desempenho.**
+    O validador Python verifica percursos concretos independentemente das fórmulas Z3, mas não substitui as demonstrações formais. A avaliação sistemática da eficiência computacional e da escalabilidade fica reservada para uma etapa posterior.
+    """)
+    return
+
+
+@app.cell
+def _():
+
+    # Registo do ambiente de execução
+    import sys as sys_repro
+    import marimo as marimo_repro
+    import z3 as z3_repro
+
+    print("Python:", sys_repro.version.split()[0])
+    print("Marimo:", marimo_repro.__version__)
+    print("Z3:", z3_repro.get_version_string())
+
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 12. Reprodutibilidade
+
+    ### 12.1. Ambiente utilizado
+
+    O trabalho foi desenvolvido em Python, utilizando Marimo para o notebook e Z3 para a verificação de fórmulas SMT.
+
+    | Componente | Versão utilizada |
+    |---|---|
+    | Python | **[PREENCHER APÓS VERIFICAÇÃO]** |
+    | Marimo | **[PREENCHER APÓS VERIFICAÇÃO]** |
+    | Z3 | **[PREENCHER APÓS VERIFICAÇÃO]** |
+    | Largura dos BitVecs | \(n=8\) |
+
+    As versões devem corresponder ao ambiente em que o notebook foi efetivamente executado.
+
+    ### 12.2. Instruções de reprodução
+
+    O código está disponível no repositório:
+
+    https://github.com/Tiago-M90/LC-TP2.3
+
+    Para reproduzir os resultados:
+
+    1. Obter o ficheiro `multiplicacao.py` do repositório.
+    2. Preparar um ambiente Python com as versões de Marimo e `z3-solver` identificadas acima.
+    3. Abrir o notebook com o comando:
+
+       `marimo edit multiplicacao.py`
+
+    4. Executar as células e confirmar os testes, as verificações por indução e os resultados do validador independente.
+    5. Manter \(n=8\) para reproduzir os resultados documentados.
+
+    As verificações relevantes incluem os casos base e passos indutivos, os testes de overflow, os percursos completos e a validação independente das transições.
+
+    A execução com outras larguras requer repetir as verificações e confirmar a compatibilidade dos exemplos utilizados.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 13. Utilização de ferramentas LLM
+
+    Foi utilizada uma ferramenta LLM (ChatGPT) como apoio técnico e pedagógico durante o desenvolvimento do trabalho.
+
+    A utilização incluiu discussão dos requisitos, formulação lógica, preparação de código Z3, proposta de testes e análise dos resultados comunicados durante o desenvolvimento.
+
+    ### 13.1. Resumo das contribuições
+
+    | Componente | Contribuição da LLM |
+    |---|---|
+    | Análise do enunciado | Interpretação dos requisitos e discussão das alternativas de modelação. |
+    | Construção do SFOTS | Apoio à formulação das variáveis, transições, inicialização e predicados de erro. |
+    | Overflow | Proposta de deteção sem sinal com BitVecs alargados e respetiva justificação. |
+    | Verificação por indução | Proposta dos invariantes auxiliares e das condições de base e passo indutivo. |
+    | Terminação | Formulação da função de progresso e do predicado *lookahead*. |
+    | Validação | Proposta de testes Z3, percursos de execução e validador independente em Python. |
+    | Documentação | Apoio à redação das explicações, conclusões e instruções de reprodução. |
+
+    As sugestões da LLM foram discutidas ao longo do diálogo e sujeitas a verificações no ambiente de desenvolvimento. Os resultados de execução referidos no notebook correspondem às verificações comunicadas durante o trabalho, não a execuções realizadas pela LLM no ambiente dos autores.
+
+    ### 13.2. Registo do diálogo
+
+    **Ferramenta:** ChatGPT — OpenAI
+
+    **Ligação para o diálogo de desenvolvimento:**
+
+    [INSERIR AQUI A LIGAÇÃO PARTILHADA DA CONVERSA]
+
+    O diálogo documenta a evolução das decisões, as alternativas consideradas e as alterações propostas.
+
+    A ligação é disponibilizada como parte da documentação complementar, de acordo com as regras da unidade curricular.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    mo.md(r"\"\"
+    ## 14. Referências
+
+    ### Materiais da unidade curricular
+
+    1. **Lógica Computacional 2026–2027 — Trabalhos Práticos.** Regras gerais dos trabalhos e enunciado do Exercício 3, páginas 1–3 e 7.
+
+    2. **Lógica Computacional: Multiplicação de Inteiros.** Descrição do algoritmo, CFA, semântica das transições e operações sobre BitVecs, páginas 1–5.
+
+    3. **Capítulo 3 — Satisfiability Modulo Theories (2.ª parte).** Sistemas de transição de primeira ordem, k-indução e propriedades de animação (*lookaheads*).
+
+    4. **Capítulo 4 — Verificação de Modelos baseada em SAT.** Definição de SFOTS, estados alcançáveis e propriedades de segurança.
+
+    5. **Capítulo 6 — Verificação Formal de Software.** Semântica de programas imperativos e propriedades de correção e terminação.
+
+    6. **Uso de Ferramentas LLM.** Documento da disciplina sobre identificação, referenciação e avaliação da utilização de ferramentas LLM.
+
+    ### Implementação e diálogo
+
+    - **Código-fonte:** https://github.com/Tiago-M90/LC-TP2.3
+    - **Diálogo com a LLM:** [INSERIR LIGAÇÃO PARTILHADA]
+    "\"\")
+    """)
+    return
+
+
 if __name__ == "__main__":
     app.run()
