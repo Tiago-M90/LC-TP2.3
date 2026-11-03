@@ -43,11 +43,29 @@ def _(mo):
 
     ### Convenção aritmética
 
-    Os valores dos BitVecs são interpretados **sem sinal**. A escolha é explícita:
-    o documento de apoio descreve também o overflow com sinal numa ALU.
-    Aqui consideramos overflow quando o resultado exato de uma soma ou duplicação
-    não cabe no intervalo \(0,\ldots,2^n-1\). Esta convenção afeta os resultados
-    de segurança e deve ser confirmada na defesa como uma decisão de modelação.
+    Os operandos são não negativos e interpretamos os BitVecs **sem sinal**.
+    Neste SFOTS, uma transição conduz a erro quando o resultado exato da
+    duplicação de \(x\) ou da soma \(z+x\) não cabe em
+    \(n\) bits sem sinal, isto é, quando excede \(2^n-1\). O teste é feito
+    antes da truncatura, usando `ZeroExt`.
+
+    **Distinção face à ALU.** O documento de apoio menciona os indicadores
+    de *overflow* e *carry* de uma ALU e exemplifica o primeiro através de
+    aritmética com sinal. A condição aqui modelada corresponde ao transbordo
+    **sem sinal** (*carry-out*), não ao indicador de overflow **com sinal**.
+    Esta diferença é uma decisão de modelação explícita, não uma equivalência
+    entre os dois indicadores.
+
+    **Justificação pela alínea 3.c.** A restrição
+    \(a,b<2^{n/2}\) garante que o produto exato satisfaz \(ab<2^n\),
+    mas não garante que caiba no intervalo com sinal. Por exemplo, com
+    \(n=8\), os operandos \(a=b=15\) são admitidos e dão
+    \(ab=225\): o resultado cabe no intervalo sem sinal
+    \(0\) a \(255\), mas excede o máximo com sinal \(127\).
+    A interpretação sem sinal é, assim, coerente com a propriedade de
+    segurança pedida em 3.c. Como o enunciado não fixa inequivocamente
+    qual dos dois indicadores deve definir o erro, não afirmamos que
+    esta escolha reproduz o overflow com sinal de uma ALU.
 
     ### Matéria utilizada
 
@@ -459,7 +477,9 @@ def _(mo):
 
     Para evitar arredondamentos com \(n\) ímpar, o maior inteiro permitido é
     \(\lfloor\sqrt{2^n-1}\rfloor\). As comparações são sem sinal (`ULE`).
-    Destas condições resulta \(ab<2^n\).
+    Destas condições resulta \(ab<2^n\). A prova abaixo é relativa aos
+    estados de erro definidos na secção 2, isto é, a transbordo **sem sinal**;
+    não demonstra ausência de overflow com sinal de uma ALU.
 
     ### 4.1. A igualdade modular não basta
 
@@ -759,7 +779,7 @@ def _(mo):
     Três repetições são adequadas a uma **comparação exploratória**, mas não
     a estimar a complexidade assintótica do algoritmo.
 
-    ### Resultados observados na execução de 31/10/2026
+    ### Resultados observados na execução de 03/11/2026
 
     Os valores seguintes foram recolhidos na execução do notebook no computador
     do grupo e comunicados através das capturas de ecrã. São resultados dessa
@@ -767,9 +787,9 @@ def _(mo):
 
     | Largura | Estados das três consultas | Tempos (ms) | Mediana (ms) |
     |---:|---|---|---:|
-    | 4 bits | `unsat`, `unsat`, `unsat` | 26,12; 27,24; 23,44 | 26,12 |
-    | 8 bits | `unsat`, `unsat`, `unsat` | 1843,96; 2127,10; 1870,38 | 1870,38 |
-    | 12 bits | `unknown`, `unknown`, `unknown` | 5023,50; 5011,41; 5013,38 | 5013,38 |
+    | 4 bits | `unsat`, `unsat`, `unsat` | 40,34; 33,83; 31,04 | 33,83 |
+    | 8 bits | `unsat`, `unsat`, `unsat` | 2401,19; 2901,38; 2414,61 | 2414,61 |
+    | 12 bits | `unknown`, `unknown`, `unknown` | 5024,00; 5020,49; 5012,11 | 5020,49 |
 
     As três consultas de 4 e de 8 bits foram concluídas com `unsat`: não
     foi encontrado contraexemplo ao passo indutivo de segurança nessas larguras.
@@ -830,8 +850,10 @@ def _(mo):
 
     ### Limitações
 
-    - **Sem sinal:** a deteção de overflow foi definida para valores não negativos
-      sem sinal. O material de apoio também apresenta a interpretação com sinal.
+    - **Interpretação do overflow:** os estados de erro representam transbordo
+      sem sinal (condição de *carry-out*). O indicador de overflow com sinal
+      de uma ALU não é equivalente; a prova de segurança da alínea 3.c deve
+      ser interpretada apenas segundo a convenção explicitada na secção 1.
     - **Largura finita:** as provas principais são executadas para \(n=8\).
       Executar para outras larguras não equivale a provar todas simultaneamente.
     - **Inicialização:** o invariante matemático só é exigido após a ação `init`.
